@@ -1,0 +1,43 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "rag-service"
+version = "0.1.0"
+description = "A production-style RAG service over the ROS 2 docs: hybrid retrieval, caching, streaming, tracing, load tests and cost per query."
+readme = "README.md"
+license = { text = "MIT" }
+authors = [{ name = "Muhammad Haroon Khan" }]
+requires-python = ">=3.10,<3.13"
+dependencies = [
+    "numpy>=1.26",
+    "pyyaml>=6",
+    "pypdf>=4",
+    "rank-bm25>=0.2.2",
+]
+
+[project.optional-dependencies]
+# local neural models: needed to build the index and to serve dense / reranked search
+models = ["sentence-transformers>=3", "torch>=2.2"]
+dev = ["pytest>=8", "ruff>=0.6"]
+
+[project.scripts]
+ragsvc-download = "ragsvc.download:main"
+ragsvc-build-index = "ragsvc.build_index:main"
+ragsvc-parity = "ragsvc.parity:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+extend-exclude = ["data", "artifacts"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP", "SIM"]

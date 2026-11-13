@@ -1,0 +1,40 @@
+# Service defaults. Override any value with RAGSVC__<SECTION>__<KEY>, e.g.
+# RAGSVC__RETRIEVAL__TOP_K=8. Values match robotics-docs-rag's best retrieval setup.
+data_dir: data
+index_dir: artifacts/index      # chunks.jsonl + embeddings.npy + manifest.json
+
+corpus:
+  ros2_commit: 0ea463a2b27865c93acc928eccd2276e47c9f71c   # ros2/ros2_documentation, jazzy
+  exclude_globs:                # machine-generated changelogs
+    - "Releases/*Complete-Changelog*"
+    - "_internal/*"
+  pdfs: true                    # three open-access ROS 2 papers from arXiv
+
+eval:
+  source_repo: haroonkhan02/robotics-docs-rag
+  source_commit: 99393783595570318515d2da43fd911b6bfa9ac1
+
+chunking:
+  strategy: section
+  max_words: 180
+  overlap_words: 40
+  section_header: true
+
+embedding:
+  model: BAAI/bge-small-en-v1.5
+  query_prefix: "Represent this sentence for searching relevant passages: "
+  batch_size: 64
+  device: auto
+
+retrieval:
+  mode: hybrid_rerank
+  candidates: 30
+  rrf_k: 60
+  rerank_top: 30
+  top_k: 5
+  reranker: cross-encoder/ms-marco-MiniLM-L-6-v2
+
+generation:
+  model: claude-opus-5-5
+  effort: low
+  max_tokens: 1024
