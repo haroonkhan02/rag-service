@@ -13,7 +13,9 @@ requires-python = ">=3.10,<3.13"
 dependencies = [
     "numpy>=1.26",
     "pyyaml>=6",
-    "pypdf>=4",
+    # pinned: PDF text extraction changes between releases (7.x adds/removes spaces),
+    # which changes chunk text and ids, so the index would not be reproducible
+    "pypdf==6.20.0",
     "rank-bm25>=0.2.2",
 ]
 
