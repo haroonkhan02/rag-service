@@ -56,3 +56,17 @@ def test_section_must_be_a_mapping(tmp_path):
     cfg.write_text("retrieval: 5\n")
     with pytest.raises(ConfigError, match="mapping"):
         load_settings(cfg, environ={})
+
+
+def test_float_settings_and_service_validation():
+    s = load_settings(REPO_CONFIG, environ={"RAGSVC__CACHE__SEMANTIC_THRESHOLD": "0.9",
+                                            "RAGSVC__RATE_LIMIT__RATE_PER_S": "2"})
+    assert s.cache.semantic_threshold == 0.9 and s.rate_limit.rate_per_s == 2.0
+    for env, message in [
+        ({"RAGSVC__CACHE__SEMANTIC_THRESHOLD": "1.5"}, "semantic_threshold"),
+        ({"RAGSVC__CACHE__TTL_S": "soon"}, "number"),
+        ({"RAGSVC__GENERATION__BACKEND": "gpt"}, "generation.backend"),
+        ({"RAGSVC__RATE_LIMIT__BURST": "0"}, "burst"),
+    ]:
+        with pytest.raises(ConfigError, match=message):
+            load_settings(REPO_CONFIG, environ=env)

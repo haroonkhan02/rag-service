@@ -23,6 +23,7 @@ import yaml
 DEFAULT_CONFIG = Path("configs/service.yaml")
 ENV_PREFIX = "RAGSVC__"
 RETRIEVAL_MODES = ("bm25", "dense", "hybrid", "hybrid_rerank")
+GENERATION_BACKENDS = ("anthropic", "mlx", "extractive")
 
 
 class ConfigError(ValueError):
@@ -71,9 +72,39 @@ class RetrievalSettings:
 
 @dataclass(frozen=True)
 class GenerationSettings:
+    backend: str = "anthropic"  # anthropic | mlx | extractive
     model: str = "claude-opus-5-5"
     effort: str = "low"
-    max_tokens: int = 1024
+    max_tokens: int = 4000  # includes the model's thinking tokens
+    mlx_model: str = "mlx-community/Qwen2.5-7B-Instruct-4bit"
+    mlx_max_tokens: int = 400
+
+
+@dataclass(frozen=True)
+class CacheSettings:
+    exact: bool = True
+    semantic: bool = True
+    # cosine similarity a new question needs to reuse a cached one; chosen in
+    # reports/semantic_cache.md (no wrong reuse on the paraphrase / near-miss sets)
+    semantic_threshold: float = 0.95
+    max_entries: int = 2048
+    ttl_s: float = 3600.0
+
+
+@dataclass(frozen=True)
+class RateLimitSettings:
+    enabled: bool = True
+    rate_per_s: float = 5.0  # sustained requests per second per client
+    burst: int = 20  # bucket size
+
+
+@dataclass(frozen=True)
+class ServerSettings:
+    host: str = "127.0.0.1"
+    port: int = 8000
+    model_workers: int = 1  # threads running the embedder / reranker (MPS: keep at 1)
+    max_queue: int = 64  # searches waiting for a worker before the service sheds load
+    max_query_chars: int = 1000
 
 
 @dataclass(frozen=True)
@@ -86,6 +117,9 @@ class Settings:
     embedding: EmbeddingSettings = field(default_factory=EmbeddingSettings)
     retrieval: RetrievalSettings = field(default_factory=RetrievalSettings)
     generation: GenerationSettings = field(default_factory=GenerationSettings)
+    cache: CacheSettings = field(default_factory=CacheSettings)
+    rate_limit: RateLimitSettings = field(default_factory=RateLimitSettings)
+    server: ServerSettings = field(default_factory=ServerSettings)
 
     def validate(self) -> Settings:
         r = self.retrieval
@@ -100,6 +134,16 @@ class Settings:
             raise ConfigError(f"unknown chunking.strategy {self.chunking.strategy!r}")
         if self.embedding.device not in ("auto", "mps", "cpu", "cuda"):
             raise ConfigError(f"unknown embedding.device {self.embedding.device!r}")
+        if self.generation.backend not in GENERATION_BACKENDS:
+            raise ConfigError(f"generation.backend must be one of {GENERATION_BACKENDS}")
+        if not 0.0 < self.cache.semantic_threshold <= 1.0:
+            raise ConfigError("cache.semantic_threshold must be in (0, 1]")
+        if self.cache.max_entries < 1 or self.cache.ttl_s <= 0:
+            raise ConfigError("cache.max_entries must be >= 1 and cache.ttl_s > 0")
+        if self.rate_limit.rate_per_s <= 0 or self.rate_limit.burst < 1:
+            raise ConfigError("rate_limit.rate_per_s must be > 0 and rate_limit.burst >= 1")
+        if self.server.model_workers < 1 or self.server.max_queue < 0:
+            raise ConfigError("server.model_workers must be >= 1 and server.max_queue >= 0")
         return self
 
 
@@ -132,6 +176,10 @@ def _coerce(value, tp, where: str):
             return int(value)
         except (TypeError, ValueError):
             raise ConfigError(f"{where}: expected an integer, got {value!r}") from None
+    if tp is float:
+        if isinstance(value, bool) or not isinstance(value, int | float):
+            raise ConfigError(f"{where}: expected a number, got {value!r}")
+        return float(value)
     if tp is Path:
         return Path(str(value))
     if tp is str:
