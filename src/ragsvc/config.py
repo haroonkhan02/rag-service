@@ -85,8 +85,8 @@ class CacheSettings:
     exact: bool = True
     semantic: bool = True
     # cosine similarity a new question needs to reuse a cached one; chosen in
-    # reports/semantic_cache.md (no wrong reuse on the paraphrase / near-miss sets)
-    semantic_threshold: float = 0.95
+    # reports/semantic_cache.md (no wrong reuse on the paraphrase / near-miss sets, + margin)
+    semantic_threshold: float = 0.96
     max_entries: int = 2048
     ttl_s: float = 3600.0
 

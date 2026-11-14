@@ -1,0 +1,271 @@
+{
+ "embedding_model": "BAAI/bge-small-en-v1.5",
+ "mode": "hybrid_rerank",
+ "n_seed": 66,
+ "n_paraphrases": 61,
+ "n_near_misses": 35,
+ "similarity": {
+  "paraphrase_to_source": {
+   "min": 0.8012591600418091,
+   "p10": 0.8816630840301514,
+   "median": 0.9508399963378906,
+   "p90": 0.9756664037704468,
+   "max": 0.9909515380859375
+  },
+  "near_miss": {
+   "min": 0.6113761067390442,
+   "p10": 0.7543061971664429,
+   "median": 0.8440391421318054,
+   "p90": 0.9370136857032776,
+   "max": 0.9495151042938232
+  },
+  "distinct": {
+   "min": 0.5214414000511169,
+   "p10": 0.5757253170013428,
+   "median": 0.6972590684890747,
+   "p90": 0.7659382224082947,
+   "max": 0.8507158756256104
+  }
+ },
+ "baselines": {
+  "paraphrase_fresh": {
+   "hit@5": 0.8852459016393442,
+   "mrr@10": 0.7625878220140516
+  },
+  "original": {
+   "hit@5": 0.8032786885245902,
+   "mrr@10": 0.6904826958105648
+  }
+ },
+ "sweep": [
+  {
+   "threshold": 0.8,
+   "paraphrase_hit_rate": 1.0,
+   "paraphrase_correct_hits": 61,
+   "paraphrase_wrong_hits": 0,
+   "near_miss_wrong_hits": 27,
+   "distinct_wrong_hits": 2,
+   "served_hit@5": 0.8032786885245902,
+   "served_mrr@10": 0.6904826958105648
+  },
+  {
+   "threshold": 0.81,
+   "paraphrase_hit_rate": 0.9836065573770492,
+   "paraphrase_correct_hits": 60,
+   "paraphrase_wrong_hits": 0,
+   "near_miss_wrong_hits": 26,
+   "distinct_wrong_hits": 2,
+   "served_hit@5": 0.8032786885245902,
+   "served_mrr@10": 0.6904826958105648
+  },
+  {
+   "threshold": 0.82,
+   "paraphrase_hit_rate": 0.9836065573770492,
+   "paraphrase_correct_hits": 60,
+   "paraphrase_wrong_hits": 0,
+   "near_miss_wrong_hits": 23,
+   "distinct_wrong_hits": 2,
+   "served_hit@5": 0.8032786885245902,
+   "served_mrr@10": 0.6904826958105648
+  },
+  {
+   "threshold": 0.83,
+   "paraphrase_hit_rate": 0.9836065573770492,
+   "paraphrase_correct_hits": 60,
+   "paraphrase_wrong_hits": 0,
+   "near_miss_wrong_hits": 21,
+   "distinct_wrong_hits": 2,
+   "served_hit@5": 0.8032786885245902,
+   "served_mrr@10": 0.6904826958105648
+  },
+  {
+   "threshold": 0.84,
+   "paraphrase_hit_rate": 0.9836065573770492,
+   "paraphrase_correct_hits": 60,
+   "paraphrase_wrong_hits": 0,
+   "near_miss_wrong_hits": 19,
+   "distinct_wrong_hits": 2,
+   "served_hit@5": 0.8032786885245902,
+   "served_mrr@10": 0.6904826958105648
+  },
+  {
+   "threshold": 0.85,
+   "paraphrase_hit_rate": 0.9672131147540983,
+   "paraphrase_correct_hits": 59,
+   "paraphrase_wrong_hits": 0,
+   "near_miss_wrong_hits": 16,
+   "distinct_wrong_hits": 2,
+   "served_hit@5": 0.819672131147541,
+   "served_mrr@10": 0.7052367941712204
+  },
+  {
+   "threshold": 0.86,
+   "paraphrase_hit_rate": 0.9672131147540983,
+   "paraphrase_correct_hits": 59,
+   "paraphrase_wrong_hits": 0,
+   "near_miss_wrong_hits": 15,
+   "distinct_wrong_hits": 0,
+   "served_hit@5": 0.819672131147541,
+   "served_mrr@10": 0.7052367941712204
+  },
+  {
+   "threshold": 0.87,
+   "paraphrase_hit_rate": 0.9672131147540983,
+   "paraphrase_correct_hits": 59,
+   "paraphrase_wrong_hits": 0,
+   "near_miss_wrong_hits": 14,
+   "distinct_wrong_hits": 0,
+   "served_hit@5": 0.819672131147541,
+   "served_mrr@10": 0.7052367941712204
+  },
+  {
+   "threshold": 0.88,
+   "paraphrase_hit_rate": 0.9180327868852459,
+   "paraphrase_correct_hits": 56,
+   "paraphrase_wrong_hits": 0,
+   "near_miss_wrong_hits": 12,
+   "distinct_wrong_hits": 0,
+   "served_hit@5": 0.819672131147541,
+   "served_mrr@10": 0.7161657559198542
+  },
+  {
+   "threshold": 0.89,
+   "paraphrase_hit_rate": 0.8852459016393442,
+   "paraphrase_correct_hits": 54,
+   "paraphrase_wrong_hits": 0,
+   "near_miss_wrong_hits": 11,
+   "distinct_wrong_hits": 0,
+   "served_hit@5": 0.819672131147541,
+   "served_mrr@10": 0.7107012750455373
+  },
+  {
+   "threshold": 0.9,
+   "paraphrase_hit_rate": 0.8688524590163934,
+   "paraphrase_correct_hits": 53,
+   "paraphrase_wrong_hits": 0,
+   "near_miss_wrong_hits": 10,
+   "distinct_wrong_hits": 0,
+   "served_hit@5": 0.819672131147541,
+   "served_mrr@10": 0.7107012750455373
+  },
+  {
+   "threshold": 0.91,
+   "paraphrase_hit_rate": 0.8524590163934426,
+   "paraphrase_correct_hits": 52,
+   "paraphrase_wrong_hits": 0,
+   "near_miss_wrong_hits": 8,
+   "distinct_wrong_hits": 0,
+   "served_hit@5": 0.819672131147541,
+   "served_mrr@10": 0.7107012750455373
+  },
+  {
+   "threshold": 0.92,
+   "paraphrase_hit_rate": 0.8032786885245902,
+   "paraphrase_correct_hits": 49,
+   "paraphrase_wrong_hits": 0,
+   "near_miss_wrong_hits": 8,
+   "distinct_wrong_hits": 0,
+   "served_hit@5": 0.819672131147541,
+   "served_mrr@10": 0.7115209471766849
+  },
+  {
+   "threshold": 0.93,
+   "paraphrase_hit_rate": 0.7377049180327869,
+   "paraphrase_correct_hits": 45,
+   "paraphrase_wrong_hits": 0,
+   "near_miss_wrong_hits": 4,
+   "distinct_wrong_hits": 0,
+   "served_hit@5": 0.8360655737704918,
+   "served_mrr@10": 0.7257285974499089
+  },
+  {
+   "threshold": 0.94,
+   "paraphrase_hit_rate": 0.6065573770491803,
+   "paraphrase_correct_hits": 37,
+   "paraphrase_wrong_hits": 0,
+   "near_miss_wrong_hits": 3,
+   "distinct_wrong_hits": 0,
+   "served_hit@5": 0.8360655737704918,
+   "served_mrr@10": 0.7462204007285975
+  },
+  {
+   "threshold": 0.95,
+   "paraphrase_hit_rate": 0.5409836065573771,
+   "paraphrase_correct_hits": 33,
+   "paraphrase_wrong_hits": 0,
+   "near_miss_wrong_hits": 0,
+   "distinct_wrong_hits": 0,
+   "served_hit@5": 0.8360655737704918,
+   "served_mrr@10": 0.7380236794171221
+  },
+  {
+   "threshold": 0.96,
+   "paraphrase_hit_rate": 0.3770491803278688,
+   "paraphrase_correct_hits": 23,
+   "paraphrase_wrong_hits": 0,
+   "near_miss_wrong_hits": 0,
+   "distinct_wrong_hits": 0,
+   "served_hit@5": 0.8688524590163934,
+   "served_mrr@10": 0.7499089253187614
+  },
+  {
+   "threshold": 0.97,
+   "paraphrase_hit_rate": 0.2459016393442623,
+   "paraphrase_correct_hits": 15,
+   "paraphrase_wrong_hits": 0,
+   "near_miss_wrong_hits": 0,
+   "distinct_wrong_hits": 0,
+   "served_hit@5": 0.8688524590163934,
+   "served_mrr@10": 0.7526411657559199
+  },
+  {
+   "threshold": 0.98,
+   "paraphrase_hit_rate": 0.06557377049180328,
+   "paraphrase_correct_hits": 4,
+   "paraphrase_wrong_hits": 0,
+   "near_miss_wrong_hits": 0,
+   "distinct_wrong_hits": 0,
+   "served_hit@5": 0.8852459016393442,
+   "served_mrr@10": 0.7543911007025762
+  },
+  {
+   "threshold": 0.99,
+   "paraphrase_hit_rate": 0.03278688524590164,
+   "paraphrase_correct_hits": 2,
+   "paraphrase_wrong_hits": 0,
+   "near_miss_wrong_hits": 0,
+   "distinct_wrong_hits": 0,
+   "served_hit@5": 0.8852459016393442,
+   "served_mrr@10": 0.7543911007025762
+  }
+ ],
+ "highest_wrong_similarity": 0.9495151042938232,
+ "chosen_threshold": 0.96,
+ "closest_near_misses": [
+  {
+   "similarity": 0.9495151042938232,
+   "question": "How do I record all topics into a bag with my own name for it?",
+   "cached": "How do I record only two topics into a bag with my own name for it?"
+  },
+  {
+   "similarity": 0.9475513696670532,
+   "question": "What command do I use for a subsequent release of my package into a ROS distro?",
+   "cached": "What command do I use for the first release of my package into a ROS distro?"
+  },
+  {
+   "similarity": 0.9431286454200745,
+   "question": "How can I give the turtlesim node a different namespace when I launch it?",
+   "cached": "How can I give the turtlesim node a different name when I launch it?"
+  },
+  {
+   "similarity": 0.9370136857032776,
+   "question": "Where do I register my C++ node's executable so ros2 run can find it?",
+   "cached": "Where do I register my Python node's executable so ros2 run can find it?"
+  },
+  {
+   "similarity": 0.92546546459198,
+   "question": "How do I build all the packages in my workspace's src folder?",
+   "cached": "How do I install all the dependencies of the packages in my workspace's src folder?"
+  }
+ ]
+}

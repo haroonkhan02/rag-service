@@ -34,6 +34,7 @@ ragsvc-download = "ragsvc.download:main"
 ragsvc-build-index = "ragsvc.build_index:main"
 ragsvc-parity = "ragsvc.parity:main"
 ragsvc-serve = "ragsvc.serve:main"
+ragsvc-cache-study = "ragsvc.cache_study:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]

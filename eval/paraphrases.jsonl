@@ -1,0 +1,61 @@
+{"id": "q01", "question": "If I'd rather skip the background reading, which domain ID values are safe to choose?"}
+{"id": "q02", "question": "What durability policy lets late-joining subscribers still receive messages a publisher sent earlier?"}
+{"id": "q03", "question": "What is the ROS 2 equivalent of a latched topic from ROS 1?"}
+{"id": "q04", "question": "Is a service the right choice for a long-running computation that I might want to cancel?"}
+{"id": "q05", "question": "Can you explain what a ROS 2 action is?"}
+{"id": "q06", "question": "In the description of publish/subscribe, what is meant by 'anonymous'?"}
+{"id": "q07", "question": "Must a node declare its parameters before it can use them?"}
+{"id": "q08", "question": "When nodes start, how do they discover one another?"}
+{"id": "q09", "question": "How do reentrant callback groups differ from mutually exclusive ones?"}
+{"id": "q10", "question": "Which severity levels are available for log messages?"}
+{"id": "q11", "question": "What is meant by a component container?"}
+{"id": "q12", "question": "What information does tf2 track, and how long does it keep it?"}
+{"id": "q13", "question": "If several RMW implementations are installed, which one does ROS 2 pick by default?"}
+{"id": "q14", "question": "By default, on which topic and at what interval are topic statistics published?"}
+{"id": "q15", "question": "What does the term node mean in ROS 2?"}
+{"id": "q16", "question": "Why is publish/subscribe in ROS 2 described as strongly typed?"}
+{"id": "q17", "question": "How do I check the rate at which messages are published on /turtle1/pose?"}
+{"id": "q18", "question": "From the terminal, how do I send an action goal and also get its feedback?"}
+{"id": "q19", "question": "How do I dump the current parameters of a node into a file?"}
+{"id": "q20", "question": "How can I launch a node so that it loads its parameters from a YAML file?"}
+{"id": "q21", "question": "How do I rename the turtlesim node when starting it?"}
+{"id": "q22", "question": "How can I record just two topics into a bag and give the bag my own name?"}
+{"id": "q23", "question": "How can I inspect the details of a bag file I recorded?"}
+{"id": "q24", "question": "What tool examines my ROS 2 installation for issues and outputs a complete report?"}
+{"id": "q25", "question": "Using the ROS 2 command line, how do I make a new Python package?"}
+{"id": "q26", "question": "How can I install every dependency needed by the packages in the src directory of my workspace?"}
+{"id": "q27", "question": "How can I view the tree of coordinate frames known to tf2?"}
+{"id": "q28", "question": "Without writing any code, how do I publish a static transform from the terminal?"}
+{"id": "q29", "question": "How can I load a component into a container that is already running?"}
+{"id": "q30", "question": "When running a node, how do I enable debug logging for that node only?"}
+{"id": "q31", "question": "How can I run the tests of a single Python package only and forward arguments to pytest?"}
+{"id": "q32", "question": "How do I get colcon to symlink files so that edits to Python code don't require a rebuild?"}
+{"id": "q33", "question": "How does an overlay workspace differ from an underlay?"}
+{"id": "q34", "question": "Where must the executable of my Python node be registered for ros2 run to find it?"}
+{"id": "q35", "question": "What CMake function do I call to generate code from my own .msg and .srv files?"}
+{"id": "q36", "question": "How does a Python node respond to parameter changes, including those of a different node?"}
+{"id": "q37", "question": "At run time, how can I make my nodes use another DDS vendor?"}
+{"id": "q38", "question": "How can I prevent my nodes from discovering nodes running on other machines?"}
+{"id": "q39", "question": "My node blocks forever when a callback makes a synchronous service call. Why?"}
+{"id": "q40", "question": "Which kernel parameter helps when big messages sent over WiFi fill memory and stall?"}
+{"id": "q41", "question": "How do I start a Fast DDS discovery server and make my nodes use it?"}
+{"id": "q42", "question": "What has to be running before rmw_zenoh nodes are able to discover each other?"}
+{"id": "q43", "question": "What are the three environment variables that enable and enforce security with SROS2?"}
+{"id": "q44", "question": "How is the keystore for ROS 2 security created?"}
+{"id": "q45", "question": "In which case does intra-process communication not copy the message?"}
+{"id": "q46", "question": "What should a real-time execution path never do?"}
+{"id": "q47", "question": "What joint type allows unlimited rotation of a part, for example a head that turns?"}
+{"id": "q48", "question": "What does xacro bring on top of plain URDF?"}
+{"id": "q49", "question": "Which formats are supported for writing launch files?"}
+{"id": "q50", "question": "In a launch file, how can I trigger a callback when one of the launched processes exits?"}
+{"id": "q51", "question": "When recording a bag, how can I override the QoS of topics?"}
+{"id": "q52", "question": "Which quaternion represents no rotation at all?"}
+{"id": "q53", "question": "What debugger do the docs suggest for getting a backtrace when a C++ node crashes?"}
+{"id": "q54", "question": "What is the release cadence of new ROS 2 distributions?"}
+{"id": "q55", "question": "Which C++ standard does ROS 2 code target and what is the maximum line length?"}
+{"id": "q56", "question": "Which command releases my package into a ROS distro for the first time?"}
+{"id": "q57", "question": "What distance did the robots cover in the Navigation2 marathon experiment?"}
+{"id": "q58", "question": "What mechanism does Navigation2 use to orchestrate planning, control and recovery?"}
+{"id": "q59", "question": "On which communication standard is ROS 2 based?"}
+{"id": "q60", "question": "What library does SLAM Toolbox build on?"}
+{"id": "q61", "question": "What path-following controllers come with the Nav2 project?"}

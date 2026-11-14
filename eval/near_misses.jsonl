@@ -1,0 +1,35 @@
+{"id": "n01", "near": "q01", "question": "What happens if two computers on my network use the same domain ID?"}
+{"id": "n02", "near": "q02", "question": "Which reliability setting makes a publisher retry messages that were lost?"}
+{"id": "n03", "near": "q04", "question": "Should I use a topic for a computation that takes a long time and may need to be cancelled?"}
+{"id": "n04", "near": "q05", "question": "What is a service in ROS 2?"}
+{"id": "n05", "near": "q07", "question": "Do nodes have to declare their publishers before using them?"}
+{"id": "n06", "near": "q08", "question": "How do nodes find each other when they shut down?"}
+{"id": "n07", "near": "q10", "question": "What severity level do log messages have by default?"}
+{"id": "n08", "near": "q11", "question": "What is a component?"}
+{"id": "n09", "near": "q13", "question": "Which middleware does ROS 2 use by default when only Zenoh is installed?"}
+{"id": "n10", "near": "q15", "question": "What is a topic?"}
+{"id": "n11", "near": "q16", "question": "Why is ROS 2 publish/subscribe called anonymous?"}
+{"id": "n12", "near": "q17", "question": "How can I measure how much bandwidth messages on /turtle1/pose use?"}
+{"id": "n13", "near": "q18", "question": "How do I call a service from the command line and see the response?"}
+{"id": "n14", "near": "q19", "question": "How can I load a node's parameter values from a file while it is running?"}
+{"id": "n15", "near": "q20", "question": "How do I start a node with a single parameter set on the command line?"}
+{"id": "n16", "near": "q21", "question": "How can I give the turtlesim node a different namespace when I launch it?"}
+{"id": "n17", "near": "q22", "question": "How do I record all topics into a bag with my own name for it?"}
+{"id": "n18", "near": "q23", "question": "How do I play back a recorded bag file?"}
+{"id": "n19", "near": "q25", "question": "How do I create a new C++ package with the ROS 2 CLI?"}
+{"id": "n20", "near": "q26", "question": "How do I build all the packages in my workspace's src folder?"}
+{"id": "n21", "near": "q28", "question": "How can I publish a fixed transform from Python code?"}
+{"id": "n22", "near": "q29", "question": "How do I unload a component from a running container?"}
+{"id": "n23", "near": "q30", "question": "How can I turn off console output for just one node when I run it?"}
+{"id": "n24", "near": "q31", "question": "How do I run only the tests of one C++ package and see the gtest output?"}
+{"id": "n25", "near": "q34", "question": "Where do I register my C++ node's executable so ros2 run can find it?"}
+{"id": "n26", "near": "q35", "question": "Which CMake function exports the dependencies of my package to downstream packages?"}
+{"id": "n27", "near": "q43", "question": "Which environment variable selects the SROS2 keystore directory?"}
+{"id": "n28", "near": "q47", "question": "Which joint type lets a part slide along an axis, like a gripper finger?"}
+{"id": "n29", "near": "q49", "question": "In which formats can parameter files be written?"}
+{"id": "n30", "near": "q52", "question": "What is the quaternion for a 90 degree rotation about the z axis?"}
+{"id": "n31", "near": "q54", "question": "How long is a ROS 2 LTS distribution supported?"}
+{"id": "n32", "near": "q56", "question": "What command do I use for a subsequent release of my package into a ROS distro?"}
+{"id": "n33", "near": "q57", "question": "How long did the Navigation2 marathon experiment take?"}
+{"id": "n34", "near": "q59", "question": "What communication standard was ROS 1 built on?"}
+{"id": "n35", "near": "q61", "question": "Which planners does the Nav2 project provide for computing a path?"}

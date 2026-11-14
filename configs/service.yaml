@@ -45,7 +45,7 @@ generation:
 cache:
   exact: true                   # same question (after normalisation), same mode and k
   semantic: true                # a paraphrase close enough to a cached question
-  semantic_threshold: 0.95      # cosine similarity; see reports/semantic_cache.md
+  semantic_threshold: 0.96      # cosine similarity; see reports/semantic_cache.md
   max_entries: 2048
   ttl_s: 3600.0
 
