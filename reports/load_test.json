@@ -1,0 +1,370 @@
+{
+ "machine": "Darwin arm64",
+ "device": "mps",
+ "n_distinct": 162,
+ "pipeline": [
+  {
+   "mode": "hybrid_rerank",
+   "concurrency": 1,
+   "requests": 324,
+   "ok": 324,
+   "wall_s": 45.65,
+   "status": {
+    "200": 324
+   },
+   "throughput_rps": 7.1,
+   "cache": {
+    "miss": 324
+   },
+   "latency_ms": {
+    "mean": 140.86,
+    "p50": 154.41,
+    "p95": 159.77,
+    "p99": 160.85,
+    "max": 246.21
+   }
+  },
+  {
+   "mode": "hybrid_rerank",
+   "concurrency": 4,
+   "requests": 324,
+   "ok": 324,
+   "wall_s": 45.57,
+   "status": {
+    "200": 324
+   },
+   "throughput_rps": 7.11,
+   "cache": {
+    "miss": 324
+   },
+   "latency_ms": {
+    "mean": 560.86,
+    "p50": 571.25,
+    "p95": 633.78,
+    "p99": 637.38,
+    "max": 668.84
+   }
+  },
+  {
+   "mode": "hybrid_rerank",
+   "concurrency": 16,
+   "requests": 324,
+   "ok": 324,
+   "wall_s": 45.57,
+   "status": {
+    "200": 324
+   },
+   "throughput_rps": 7.11,
+   "cache": {
+    "miss": 324
+   },
+   "latency_ms": {
+    "mean": 2203.97,
+    "p50": 2264.15,
+    "p95": 2446.37,
+    "p99": 2489.47,
+    "max": 2491.15
+   }
+  },
+  {
+   "mode": "hybrid",
+   "concurrency": 1,
+   "requests": 324,
+   "ok": 324,
+   "wall_s": 2.82,
+   "status": {
+    "200": 324
+   },
+   "throughput_rps": 114.98,
+   "cache": {
+    "miss": 324
+   },
+   "latency_ms": {
+    "mean": 8.68,
+    "p50": 8.19,
+    "p95": 9.7,
+    "p99": 15.57,
+    "max": 72.15
+   }
+  },
+  {
+   "mode": "hybrid",
+   "concurrency": 4,
+   "requests": 324,
+   "ok": 324,
+   "wall_s": 2.55,
+   "status": {
+    "200": 324
+   },
+   "throughput_rps": 127.09,
+   "cache": {
+    "miss": 324
+   },
+   "latency_ms": {
+    "mean": 31.32,
+    "p50": 30.3,
+    "p95": 33.88,
+    "p99": 57.18,
+    "max": 84.25
+   }
+  },
+  {
+   "mode": "hybrid",
+   "concurrency": 16,
+   "requests": 324,
+   "ok": 324,
+   "wall_s": 2.54,
+   "status": {
+    "200": 324
+   },
+   "throughput_rps": 127.69,
+   "cache": {
+    "miss": 324
+   },
+   "latency_ms": {
+    "mean": 122.55,
+    "p50": 120.07,
+    "p95": 127.19,
+    "p99": 204.06,
+    "max": 224.07
+   }
+  }
+ ],
+ "overload": [
+  {
+   "concurrency": 32,
+   "max_queue": 64,
+   "shed": 0,
+   "requests": 648,
+   "ok": 648,
+   "wall_s": 91.06,
+   "status": {
+    "200": 648
+   },
+   "throughput_rps": 7.12,
+   "cache": {
+    "miss": 648
+   },
+   "latency_ms": {
+    "mean": 4390.42,
+    "p50": 4473.32,
+    "p95": 4768.64,
+    "p99": 4828.26,
+    "max": 4877.87
+   }
+  },
+  {
+   "concurrency": 128,
+   "max_queue": 64,
+   "shed": 340,
+   "requests": 648,
+   "ok": 308,
+   "wall_s": 17.43,
+   "status": {
+    "200": 308,
+    "503": 340
+   },
+   "throughput_rps": 17.68,
+   "cache": {
+    "miss": 124,
+    "shared": 184
+   },
+   "latency_ms": {
+    "mean": 4910.12,
+    "p50": 4714.95,
+    "p95": 9084.85,
+    "p99": 9298.38,
+    "max": 9509.24
+   }
+  }
+ ],
+ "cache": {
+  "n": 1000,
+  "n_questions": 66,
+  "paraphrase_share": 0.3,
+  "rows": [
+   {
+    "config": "no cache",
+    "distinct_wordings": 105,
+    "requests": 1000,
+    "ok": 1000,
+    "wall_s": 102.63,
+    "status": {
+     "200": 1000
+    },
+    "throughput_rps": 9.74,
+    "cache": {
+     "miss": 775,
+     "shared": 225
+    },
+    "latency_ms": {
+     "mean": 818.11,
+     "p50": 882.27,
+     "p95": 1125.72,
+     "p99": 1195.69,
+     "max": 1229.23
+    }
+   },
+   {
+    "config": "exact",
+    "distinct_wordings": 105,
+    "requests": 1000,
+    "ok": 1000,
+    "wall_s": 14.81,
+    "status": {
+     "200": 1000
+    },
+    "throughput_rps": 67.53,
+    "cache": {
+     "exact": 866,
+     "miss": 105,
+     "shared": 29
+    },
+    "latency_ms": {
+     "mean": 115.31,
+     "p50": 0.73,
+     "p95": 983.02,
+     "p99": 1127.35,
+     "max": 1239.25
+    }
+   },
+   {
+    "config": "exact + semantic (0.96)",
+    "distinct_wordings": 105,
+    "requests": 1000,
+    "ok": 1000,
+    "wall_s": 13.37,
+    "status": {
+     "200": 1000
+    },
+    "throughput_rps": 74.79,
+    "cache": {
+     "exact": 764,
+     "miss": 92,
+     "semantic": 77,
+     "shared": 67
+    },
+    "latency_ms": {
+     "mean": 106.83,
+     "p50": 0.97,
+     "p95": 799.51,
+     "p99": 1046.28,
+     "max": 1165.37
+    }
+   }
+  ]
+ },
+ "ratelimit": {
+  "sent_rate_per_s": 20.0,
+  "seconds": 10.0,
+  "limit_per_s": 5.0,
+  "burst": 20,
+  "expected_allowed": 70,
+  "requests": 200,
+  "ok": 69,
+  "wall_s": 9.96,
+  "status": {
+   "200": 69,
+   "429": 131
+  },
+  "throughput_rps": 6.93,
+  "cache": {
+   "exact": 64,
+   "miss": 1,
+   "shared": 4
+  },
+  "latency_ms": {
+   "mean": 10.43,
+   "p50": 2.83,
+   "p95": 57.49,
+   "p99": 157.03,
+   "max": 208.99
+  }
+ },
+ "ask": {
+  "model": "mlx-community/Qwen2.5-7B-Instruct-4bit",
+  "sequential": {
+   "requests": 20,
+   "ok": 20,
+   "wall_s": 62.38,
+   "status": {
+    "200": 20
+   },
+   "throughput_rps": 0.32,
+   "cache": {
+    "miss": 20
+   },
+   "latency_ms": {
+    "mean": 3119.13,
+    "p50": 2992.64,
+    "p95": 5082.58,
+    "p99": 6471.04,
+    "max": 6471.04
+   },
+   "ttft_ms": {
+    "p50": 1459.7,
+    "p95": 1672.8
+   },
+   "output_tokens_median": 39.5,
+   "input_tokens_median": 1232.0,
+   "tokens_per_s_median": 15.3,
+   "abstained": 2,
+   "no_citation": 1,
+   "invalid_citations": 0,
+   "truncated": 0
+  },
+  "repeat_cached": {
+   "requests": 20,
+   "ok": 20,
+   "wall_s": 0.01,
+   "status": {
+    "200": 20
+   },
+   "throughput_rps": 1529.88,
+   "cache": {
+    "exact": 20
+   },
+   "latency_ms": {
+    "mean": 0.65,
+    "p50": 0.63,
+    "p95": 0.71,
+    "p99": 0.85,
+    "max": 0.85
+   },
+   "ttft_ms": {
+    "p50": 0.5,
+    "p95": 0.6
+   }
+  },
+  "concurrent_4": {
+   "requests": 20,
+   "ok": 20,
+   "wall_s": 94.77,
+   "status": {
+    "200": 20
+   },
+   "throughput_rps": 0.21,
+   "cache": {
+    "miss": 20
+   },
+   "latency_ms": {
+    "mean": 17431.93,
+    "p50": 18399.48,
+    "p95": 24214.19,
+    "p99": 27167.07,
+    "max": 27167.07
+   },
+   "ttft_ms": {
+    "p50": 14110.1,
+    "p95": 21944.0
+   },
+   "output_tokens_median": 83.0,
+   "input_tokens_median": 1325.0,
+   "tokens_per_s_median": 18.8,
+   "abstained": 1,
+   "no_citation": 2,
+   "invalid_citations": 0,
+   "truncated": 0
+  }
+ }
+}
