@@ -122,3 +122,13 @@ def chunks(docs):
 @pytest.fixture
 def embedder():
     return HashEmbedder()
+
+
+@pytest.fixture
+def searcher(chunks, embedder):
+    from ragsvc.bundle import IndexBundle
+    from ragsvc.search import Searcher
+
+    bundle = IndexBundle(chunks, embedder.encode_docs([c.text for c in chunks]),
+                         {"sha256": {"chunks.jsonl": "test"}})
+    return Searcher(bundle, embedder=embedder, reranker=LengthReranker())

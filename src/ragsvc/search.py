@@ -99,7 +99,10 @@ class Searcher:
         scores = self.matrix @ np.asarray(query_vec, dtype=np.float32)
         return [(self.ids[i], float(scores[i])) for i in top_n(scores, n)]
 
-    def search(self, query: str, mode: str | None = None, k: int | None = None) -> SearchResult:
+    def search(self, query: str, mode: str | None = None, k: int | None = None,
+               query_vec: np.ndarray | None = None) -> SearchResult:
+        """`query_vec`: an embedding the caller already computed (the cache lookup needs
+        one), so the query is not embedded twice."""
         s = self.settings
         mode = s.mode if mode is None else mode
         k = s.top_k if k is None else k
@@ -107,7 +110,7 @@ class Searcher:
             raise ValueError(f"unknown mode {mode!r}; choose from {RETRIEVAL_MODES}")
         if k < 1:
             raise ValueError("k must be >= 1")
-        if mode != "bm25" and self.embedder is None:
+        if mode != "bm25" and self.embedder is None and query_vec is None:
             raise RuntimeError(f"mode {mode!r} needs an embedder")
         if mode == "hybrid_rerank" and self.reranker is None:
             raise RuntimeError("hybrid_rerank needs a reranker")
@@ -123,9 +126,11 @@ class Searcher:
             for r, (cid, _) in enumerate(bm, 1):
                 ranks.setdefault(cid, {})["bm25"] = r
         if mode in ("dense", "hybrid", "hybrid_rerank"):
-            t0 = time.perf_counter()
-            q = self.embedder.encode_queries([query])[0]
-            t["embed"] = (time.perf_counter() - t0) * 1e3
+            q = query_vec
+            if q is None:
+                t0 = time.perf_counter()
+                q = self.embedder.encode_queries([query])[0]
+                t["embed"] = (time.perf_counter() - t0) * 1e3
             t0 = time.perf_counter()
             de = self.dense_search(q, n)
             t["dense"] = (time.perf_counter() - t0) * 1e3
