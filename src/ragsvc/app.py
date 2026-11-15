@@ -26,6 +26,7 @@ from pydantic import BaseModel, Field
 
 from ragsvc.ratelimit import RateLimiter
 from ragsvc.service import Overloaded, RagService, passages_payload
+from ragsvc.tracing import TraceMiddleware
 
 API_KEYS_ENV = "RAGSVC_API_KEYS"
 
@@ -60,6 +61,10 @@ def create_app(service: RagService, api_keys: frozenset[str] | None = None,
 
     app = FastAPI(title="RAG Service", version="0.1.0", lifespan=lifespan)
     app.state.service, app.state.limiter = service, limiter
+    app.add_middleware(TraceMiddleware, tracer=service.tracer)
+
+    def span_of(request: Request):
+        return getattr(request.state, "span", None)
 
     def client_id(request: Request) -> str:
         key = request.headers.get("x-api-key")
@@ -116,18 +121,18 @@ def create_app(service: RagService, api_keys: frozenset[str] | None = None,
         return out
 
     @app.post("/search")
-    async def search(body: SearchRequest, client: str = Depends(guard)):
+    async def search(body: SearchRequest, request: Request, client: str = Depends(guard)):
         check(body)
-        out = await service.search(body.query.strip(), body.mode, body.k)
+        out = await service.search(body.query.strip(), body.mode, body.k, span_of(request))
         return {"query": body.query, "cache": out.cache, "similarity": out.similarity,
                 "matched_query": out.matched_query,
                 "timings_ms": {n: round(v, 2) for n, v in out.timings_ms.items()},
                 "passages": passages_payload(out.hits)}
 
     @app.post("/ask")
-    async def ask(body: AskRequest, client: str = Depends(guard)):
+    async def ask(body: AskRequest, request: Request, client: str = Depends(guard)):
         check(body)
-        events = service.ask(body.query.strip(), body.mode, body.k)
+        events = service.ask(body.query.strip(), body.mode, body.k, span_of(request))
         if not body.stream:
             passages, final = [], None
             async for ev in events:

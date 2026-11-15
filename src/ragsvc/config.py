@@ -99,6 +99,15 @@ class RateLimitSettings:
 
 
 @dataclass(frozen=True)
+class TracingSettings:
+    enabled: bool = False  # needs the `otel` extra
+    exporter: str = "otlp"  # otlp (HTTP, to a collector) | console
+    endpoint: str = ""  # empty: OTEL_EXPORTER_OTLP_ENDPOINT, else http://localhost:4318
+    service_name: str = "rag-service"
+    sample_ratio: float = 1.0  # share of traces kept when the caller did not decide
+
+
+@dataclass(frozen=True)
 class ServerSettings:
     host: str = "127.0.0.1"
     port: int = 8000
@@ -119,6 +128,7 @@ class Settings:
     generation: GenerationSettings = field(default_factory=GenerationSettings)
     cache: CacheSettings = field(default_factory=CacheSettings)
     rate_limit: RateLimitSettings = field(default_factory=RateLimitSettings)
+    tracing: TracingSettings = field(default_factory=TracingSettings)
     server: ServerSettings = field(default_factory=ServerSettings)
 
     def validate(self) -> Settings:
@@ -142,6 +152,10 @@ class Settings:
             raise ConfigError("cache.max_entries must be >= 1 and cache.ttl_s > 0")
         if self.rate_limit.rate_per_s <= 0 or self.rate_limit.burst < 1:
             raise ConfigError("rate_limit.rate_per_s must be > 0 and rate_limit.burst >= 1")
+        if self.tracing.exporter not in ("otlp", "console"):
+            raise ConfigError("tracing.exporter must be 'otlp' or 'console'")
+        if not 0.0 <= self.tracing.sample_ratio <= 1.0:
+            raise ConfigError("tracing.sample_ratio must be in [0, 1]")
         if self.server.model_workers < 1 or self.server.max_queue < 0:
             raise ConfigError("server.model_workers must be >= 1 and server.max_queue >= 0")
         return self

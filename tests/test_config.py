@@ -67,6 +67,8 @@ def test_float_settings_and_service_validation():
         ({"RAGSVC__CACHE__TTL_S": "soon"}, "number"),
         ({"RAGSVC__GENERATION__BACKEND": "gpt"}, "generation.backend"),
         ({"RAGSVC__RATE_LIMIT__BURST": "0"}, "burst"),
+        ({"RAGSVC__TRACING__EXPORTER": "zipkin"}, "tracing.exporter"),
+        ({"RAGSVC__TRACING__SAMPLE_RATIO": "2"}, "sample_ratio"),
     ]:
         with pytest.raises(ConfigError, match=message):
             load_settings(REPO_CONFIG, environ=env)

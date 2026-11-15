@@ -15,9 +15,10 @@ from ragsvc.config import Settings, load_settings
 from ragsvc.generate import make_generator
 from ragsvc.search import Searcher
 from ragsvc.service import RagService
+from ragsvc.tracing import Tracer, setup_tracing
 
 
-def build_service(cfg: Settings, generator=None) -> RagService:
+def build_service(cfg: Settings, generator=None, tracer: Tracer | None = None) -> RagService:
     from ragsvc.models import STEmbedder, STReranker
 
     bundle = load_bundle(cfg.index_dir, cfg)
@@ -26,7 +27,8 @@ def build_service(cfg: Settings, generator=None) -> RagService:
     reranker = STReranker(cfg.retrieval.reranker, e.device)
     searcher = Searcher(bundle, cfg.retrieval, embedder, reranker)
     searcher.search("warm up the models", "hybrid_rerank")  # first call compiles kernels
-    return RagService(searcher, generator or make_generator(cfg.generation), cfg)
+    return RagService(searcher, generator or make_generator(cfg.generation), cfg,
+                      tracer or setup_tracing(cfg.tracing))
 
 
 def main(argv: list[str] | None = None) -> None:

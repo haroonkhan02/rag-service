@@ -54,6 +54,13 @@ rate_limit:
   rate_per_s: 5.0               # sustained requests per second per client
   burst: 20
 
+tracing:
+  enabled: false                # OpenTelemetry spans per request; needs the `otel` extra
+  exporter: otlp                # otlp (HTTP, to a collector) | console
+  endpoint: ""                  # empty: OTEL_EXPORTER_OTLP_ENDPOINT or http://localhost:4318
+  service_name: rag-service
+  sample_ratio: 1.0             # share of traces kept when the caller did not decide
+
 server:
   host: 127.0.0.1
   port: 8000

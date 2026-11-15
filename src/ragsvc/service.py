@@ -25,6 +25,7 @@ from ragsvc.cache import QueryCache
 from ragsvc.config import RETRIEVAL_MODES, Settings
 from ragsvc.generate import Generator, GenResult, parse_citations
 from ragsvc.search import Hit, Searcher
+from ragsvc.tracing import Span, Tracer
 
 
 class Overloaded(RuntimeError):
@@ -56,8 +57,10 @@ def passages_payload(hits: list[Hit]) -> list[dict]:
 
 
 class RagService:
-    def __init__(self, searcher: Searcher, generator: Generator, settings: Settings):
+    def __init__(self, searcher: Searcher, generator: Generator, settings: Settings,
+                 tracer: Tracer | None = None):
         self.searcher, self.generator, self.settings = searcher, generator, settings
+        self.tracer = tracer or Tracer()
         c = settings.cache
         threshold = c.semantic_threshold if c.semantic else None
         self.search_cache = QueryCache(c.max_entries, c.ttl_s, threshold)
@@ -70,6 +73,7 @@ class RagService:
 
     def close(self) -> None:
         self._pool.shutdown(wait=False, cancel_futures=True)
+        self.tracer.shutdown()
 
     # -- helpers -------------------------------------------------------------------------
     def resolve(self, mode: str | None, k: int | None) -> tuple[str, int]:
@@ -100,9 +104,17 @@ class RagService:
         return self.searcher.embedder.encode_queries([query])[0]
 
     # -- search --------------------------------------------------------------------------
-    async def search(self, query: str, mode: str | None = None,
-                     k: int | None = None) -> SearchOutcome:
+    async def search(self, query: str, mode: str | None = None, k: int | None = None,
+                     parent: Span | None = None) -> SearchOutcome:
         mode, k = self.resolve(mode, k)
+        with self.tracer.start("rag.search", parent,
+                               **{"rag.mode": mode, "rag.k": k}) as span:
+            out = await self._search(query, mode, k, span)
+            span.set(**{"rag.cache": out.cache, "rag.cache.similarity": out.similarity,
+                        "rag.hits": len(out.hits)})
+            return out
+
+    async def _search(self, query: str, mode: str, k: int, span: Span) -> SearchOutcome:
         scope = (mode, k)
         t0 = time.perf_counter()
         cfg = self.settings.cache
@@ -133,13 +145,19 @@ class RagService:
             vec, timings = None, {}
             if cfg.semantic and use_vec:
                 te = time.perf_counter()
-                vec = await self._in_pool(self._embed, query)
+                with span.child("rag.embed"):
+                    vec = await self._in_pool(self._embed, query)
                 timings["embed"] = (time.perf_counter() - te) * 1e3
                 hit = self.search_cache.get_semantic(scope, vec)
                 if hit:
                     future.set_result((hit.value, timings))
                     return done(hit.value, timings, "semantic", hit)
-            result = await self._in_pool(self.searcher.search, query, mode, k, vec)
+            tr = time.perf_counter()
+            with span.child("rag.retrieve") as stage:
+                result = await self._in_pool(self.searcher.search, query, mode, k, vec)
+                waited = (time.perf_counter() - tr) * 1e3 - result.timings_ms.get("total", 0.0)
+                stage.set(**{f"rag.{n}_ms": round(v, 3) for n, v in result.timings_ms.items()},
+                          **{"rag.queue_wait_ms": round(max(waited, 0.0), 3)})
             timings = {**timings, **{n: v for n, v in result.timings_ms.items() if n != "total"}}
             if cfg.exact or cfg.semantic:
                 self.search_cache.put(scope, query, result.hits, vec)
@@ -154,10 +172,23 @@ class RagService:
             self._inflight.pop(key, None)
 
     # -- ask -----------------------------------------------------------------------------
-    async def ask(self, query: str, mode: str | None = None,
-                  k: int | None = None) -> AsyncIterator[dict]:
+    async def ask(self, query: str, mode: str | None = None, k: int | None = None,
+                  parent: Span | None = None) -> AsyncIterator[dict]:
         """Events: passages, then token*, then done (or refusal). Dicts with a `type`."""
         mode, k = self.resolve(mode, k)
+        with self.tracer.start("rag.ask", parent, **{"rag.mode": mode, "rag.k": k}) as span:
+            async for ev in self._ask(query, mode, k, span):
+                if ev["type"] == "done":
+                    usage = ev["usage"]
+                    span.set(**{"rag.cache": ev["cache"], "rag.abstained": ev["abstained"],
+                                "rag.citations": len(ev["citations"]),
+                                "rag.cost_usd": usage["cost_usd"],
+                                "rag.saved_cost_usd": usage["saved_cost_usd"]})
+                elif ev["type"] == "refusal":
+                    span.set(**{"rag.refused": True})
+                yield ev
+
+    async def _ask(self, query: str, mode: str, k: int, span: Span) -> AsyncIterator[dict]:
         scope = (mode, k, self.generator.name)
         t0 = time.perf_counter()
         cfg = self.settings.cache
@@ -165,7 +196,7 @@ class RagService:
         cached = self.answer_cache.get_exact(scope, query) if cfg.exact else None
         found: SearchOutcome | None = None
         if cached is None:
-            found = await self.search(query, mode, k)
+            found = await self.search(query, mode, k, span)
             # a paraphrase that reused another question's passages may reuse its answer too
             if found.cache == "semantic" and found.matched_query:
                 cached = self.answer_cache.get_exact(scope, found.matched_query, count_miss=False)
@@ -182,11 +213,18 @@ class RagService:
         yield {"type": "passages", "passages": passages_payload(found.hits),
                "cache": found.cache}
         gen: GenResult | None = None
-        async for item in self.generator.stream(query, found.hits):
-            if isinstance(item, GenResult):
-                gen = item
-            else:
-                yield {"type": "token", "text": item}
+        with span.child("rag.generate",
+                        **{"gen_ai.request.model": self.generator.name}) as gspan:
+            async for item in self.generator.stream(query, found.hits):
+                if isinstance(item, GenResult):
+                    gen = item
+                    gspan.set(**{"gen_ai.response.model": gen.model,
+                                 "gen_ai.usage.input_tokens": gen.input_tokens,
+                                 "gen_ai.usage.output_tokens": gen.output_tokens,
+                                 "gen_ai.response.finish_reasons": [gen.stop_reason],
+                                 "rag.ttft_ms": gen.ttft_ms, "rag.cost_usd": gen.cost_usd})
+                else:
+                    yield {"type": "token", "text": item}
         if gen is None:  # pragma: no cover - a generator must end with a GenResult
             raise RuntimeError("generator ended without a result")
         if gen.refused:
