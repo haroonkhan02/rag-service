@@ -38,6 +38,7 @@ ragsvc-parity = "ragsvc.parity:main"
 ragsvc-serve = "ragsvc.serve:main"
 ragsvc-cache-study = "ragsvc.cache_study:main"
 ragsvc-loadtest = "ragsvc.load_study:main"
+ragsvc-trace-study = "ragsvc.trace_study:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]
