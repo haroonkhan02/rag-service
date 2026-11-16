@@ -62,9 +62,9 @@ cache adds little because its threshold has to be strict: paraphrases (median si
 0.951) and look-alike questions that ask something else (up to 0.950) overlap, so the
 default of 0.96 reuses 23 of 61 paraphrases and none of 35 look-alikes.
 
-**Where the time goes**: traces of single requests show an uncached search taking 161.5 ms,
-of which 152.7 ms is the cross-encoder (embedding 5.3, BM25 1.9, dense 0.2). A semantic
-cache hit costs 5.4 ms and an exact hit 0.17 ms. A local-model answer takes 2.6 s, 2.4 s of
+**Where the time goes**: traces of single requests show an uncached search taking 161.6 ms,
+of which 153.0 ms is the cross-encoder (embedding 5.7, BM25 1.9, dense 0.2). A semantic
+cache hit costs 5.7 ms and an exact hit 0.18 ms. A local-model answer takes 2.6 s, 2.4 s of
 it generation. Tracing itself adds 0.03 ms to a cache hit and nothing measurable elsewhere.
 
 **Answers** (66 questions, 5 of them unanswerable from the corpus; top 5 passages)
