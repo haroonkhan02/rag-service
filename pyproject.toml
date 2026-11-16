@@ -42,6 +42,7 @@ ragsvc-cache-study = "ragsvc.cache_study:main"
 ragsvc-loadtest = "ragsvc.load_study:main"
 ragsvc-trace-study = "ragsvc.trace_study:main"
 ragsvc-answer-eval = "ragsvc.answer_eval:main"
+ragsvc-cost = "ragsvc.cost_study:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]

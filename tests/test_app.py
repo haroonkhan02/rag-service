@@ -37,6 +37,11 @@ def test_health_ready_and_metrics(searcher):
     m = client.get("/metrics").json()
     assert m["counters"]["search_requests"] == 1 and m["counters"]["search_cache_miss"] == 1
     assert m["search_cache"]["entries"] == 1 and m["rate_limit"]["allowed"] == 1
+    client.post("/ask", json={"query": "ros2 bag record", "mode": "bm25", "stream": False})
+    client.post("/ask", json={"query": "ros2 bag record", "mode": "bm25", "stream": False})
+    usage = client.get("/metrics").json()["usage"]
+    assert usage["answers_generated"] == 1 and usage["answers_from_cache"] == 1
+    assert usage["cost_usd"] == 0.0  # the extractive generator has no price
 
 
 def test_search_returns_passages_timings_and_cache_status(searcher):

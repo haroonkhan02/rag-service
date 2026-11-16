@@ -49,6 +49,32 @@ class Metrics:
         self.counters[name] = self.counters.get(name, 0) + by
 
 
+@dataclass
+class Usage:
+    """Running totals for the answers this process produced."""
+
+    answers_generated: int = 0
+    answers_from_cache: int = 0
+    input_tokens: int = 0
+    output_tokens: int = 0
+    cost_usd: float = 0.0
+    saved_cost_usd: float = 0.0  # what the cached answers would have cost to generate again
+
+    def add(self, gen: GenResult, fresh: bool) -> None:
+        if fresh:
+            self.answers_generated += 1
+            self.input_tokens += gen.input_tokens
+            self.output_tokens += gen.output_tokens
+            self.cost_usd += gen.cost_usd
+        else:
+            self.answers_from_cache += 1
+            self.saved_cost_usd += gen.cost_usd
+
+    def as_dict(self) -> dict:
+        return {**self.__dict__, "cost_usd": round(self.cost_usd, 6),
+                "saved_cost_usd": round(self.saved_cost_usd, 6)}
+
+
 def passages_payload(hits: list[Hit]) -> list[dict]:
     return [{"n": i, "chunk_id": h.chunk.chunk_id, "doc_id": h.chunk.doc_id,
              "section": h.chunk.section, "source": h.chunk.source, "page": h.chunk.page,
@@ -66,6 +92,7 @@ class RagService:
         self.search_cache = QueryCache(c.max_entries, c.ttl_s, threshold)
         self.answer_cache = QueryCache(c.max_entries, c.ttl_s, threshold)
         self.metrics = Metrics()
+        self.usage = Usage()
         self._pool = ThreadPoolExecutor(settings.server.model_workers,
                                         thread_name_prefix="ragsvc-model")
         self._waiting = 0
@@ -240,6 +267,7 @@ class RagService:
               retrieval_ms: dict, similarity: float | None) -> dict:
         citations = parse_citations(gen.text)
         fresh = cache == "miss"
+        self.usage.add(gen, fresh)
         return {
             "type": "done", "answer": gen.text, "citations": citations,
             "invalid_citations": [n for n in citations if not 1 <= n <= len(hits)],
@@ -262,5 +290,6 @@ class RagService:
                                  "entries": len(self.search_cache)},
                 "answer_cache": {**self.answer_cache.stats.as_dict(),
                                  "entries": len(self.answer_cache)},
+                "usage": self.usage.as_dict(),
                 "queue_depth": self.queue_depth,
                 "generator": self.generator.name}

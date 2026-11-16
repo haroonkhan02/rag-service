@@ -22,6 +22,7 @@ from dataclasses import asdict, dataclass
 from typing import Protocol
 
 from ragsvc.config import GenerationSettings
+from ragsvc.cost import cost_usd
 from ragsvc.search import Hit
 
 ABSTAIN = "I can't answer that from the ROS 2 documentation I have."
@@ -37,9 +38,6 @@ support it, in square brackets, e.g. "Use transient local durability [2]." or "[
 backticks. Copy commands exactly as they appear in the passages."""
 
 FALLBACK_BETA = "server-side-fallback-2026-07-01"
-# USD per million tokens (input, output), Anthropic list prices
-PRICES = {"claude-opus-5-5": (4.0, 20.0), "claude-sonnet-5-5": (2.0, 10.0),
-          "claude-haiku-5-5": (0.10, 0.50)}
 _CITATION = re.compile(r"\[(\d{1,2})\]")
 _SENTENCE = re.compile(r"(?<=[.!?])\s+")
 
@@ -65,11 +63,6 @@ def parse_citations(text: str) -> list[int]:
         if n not in seen:
             seen.append(n)
     return seen
-
-
-def cost_usd(model: str, input_tokens: int, output_tokens: int) -> float:
-    price_in, price_out = PRICES.get(model, (0.0, 0.0))
-    return (input_tokens * price_in + output_tokens * price_out) / 1e6
 
 
 @dataclass
