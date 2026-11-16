@@ -1,0 +1,340 @@
+{
+ "judges": [
+  "qwen7b",
+  "llama3b"
+ ],
+ "primary_judge": "qwen7b",
+ "runs": {
+  "bm25": {
+   "mode": "bm25",
+   "k": 5,
+   "model": "mlx-community/Qwen2.5-7B-Instruct-4bit",
+   "n": 66,
+   "answerable": {
+    "correct": {
+     "n": 61,
+     "count": 45,
+     "share": 0.7377
+    },
+    "abstained": {
+     "n": 61,
+     "count": 5,
+     "share": 0.082
+    },
+    "retrieval_hit": {
+     "n": 61,
+     "count": 44,
+     "share": 0.7213
+    },
+    "correct_when_retrieved": {
+     "n": 44,
+     "count": 39,
+     "share": 0.8864
+    },
+    "correct_when_not_retrieved": {
+     "n": 17,
+     "count": 6,
+     "share": 0.3529
+    },
+    "abstained_when_not_retrieved": {
+     "n": 17,
+     "count": 5,
+     "share": 0.2941
+    }
+   },
+   "unanswerable": {
+    "abstained": {
+     "n": 5,
+     "count": 5,
+     "share": 1.0
+    }
+   },
+   "given_answers": {
+    "has_citation": {
+     "n": 56,
+     "count": 53,
+     "share": 0.9464
+    },
+    "invalid_citation": {
+     "n": 56,
+     "count": 1,
+     "share": 0.0179
+    },
+    "cites_relevant_passage": {
+     "n": 56,
+     "count": 36,
+     "share": 0.6429
+    },
+    "contains_answer_key": {
+     "n": 56,
+     "count": 29,
+     "share": 0.5179
+    },
+    "truncated": {
+     "n": 56,
+     "count": 0,
+     "share": 0.0
+    },
+    "unparsed_verdict": {
+     "n": 56,
+     "count": 0,
+     "share": 0.0
+    }
+   },
+   "overall": {
+    "n": 66,
+    "count": 50,
+    "share": 0.7576
+   },
+   "by_category": {
+    "cli": {
+     "n": 15,
+     "count": 11,
+     "share": 0.7333
+    },
+    "concept": {
+     "n": 16,
+     "count": 13,
+     "share": 0.8125
+    },
+    "howto": {
+     "n": 22,
+     "count": 16,
+     "share": 0.7273
+    },
+    "paper": {
+     "n": 5,
+     "count": 3,
+     "share": 0.6
+    },
+    "project": {
+     "n": 3,
+     "count": 2,
+     "share": 0.6667
+    },
+    "unanswerable": {
+     "n": 5,
+     "count": 5,
+     "share": 1.0
+    }
+   },
+   "input_tokens_mean": 1275.9,
+   "output_tokens_mean": 50.9,
+   "by_judge": {
+    "qwen7b": {
+     "n": 61,
+     "count": 45,
+     "share": 0.7377
+    },
+    "llama3b": {
+     "n": 61,
+     "count": 53,
+     "share": 0.8689
+    }
+   }
+  },
+  "hybrid_rerank": {
+   "mode": "hybrid_rerank",
+   "k": 5,
+   "model": "mlx-community/Qwen2.5-7B-Instruct-4bit",
+   "n": 66,
+   "answerable": {
+    "correct": {
+     "n": 61,
+     "count": 50,
+     "share": 0.8197
+    },
+    "abstained": {
+     "n": 61,
+     "count": 3,
+     "share": 0.0492
+    },
+    "retrieval_hit": {
+     "n": 61,
+     "count": 49,
+     "share": 0.8033
+    },
+    "correct_when_retrieved": {
+     "n": 49,
+     "count": 47,
+     "share": 0.9592
+    },
+    "correct_when_not_retrieved": {
+     "n": 12,
+     "count": 3,
+     "share": 0.25
+    },
+    "abstained_when_not_retrieved": {
+     "n": 12,
+     "count": 2,
+     "share": 0.1667
+    }
+   },
+   "unanswerable": {
+    "abstained": {
+     "n": 5,
+     "count": 5,
+     "share": 1.0
+    }
+   },
+   "given_answers": {
+    "has_citation": {
+     "n": 58,
+     "count": 55,
+     "share": 0.9483
+    },
+    "invalid_citation": {
+     "n": 58,
+     "count": 1,
+     "share": 0.0172
+    },
+    "cites_relevant_passage": {
+     "n": 58,
+     "count": 40,
+     "share": 0.6897
+    },
+    "contains_answer_key": {
+     "n": 58,
+     "count": 36,
+     "share": 0.6207
+    },
+    "truncated": {
+     "n": 58,
+     "count": 0,
+     "share": 0.0
+    },
+    "unparsed_verdict": {
+     "n": 58,
+     "count": 0,
+     "share": 0.0
+    }
+   },
+   "overall": {
+    "n": 66,
+    "count": 55,
+    "share": 0.8333
+   },
+   "by_category": {
+    "cli": {
+     "n": 15,
+     "count": 11,
+     "share": 0.7333
+    },
+    "concept": {
+     "n": 16,
+     "count": 14,
+     "share": 0.875
+    },
+    "howto": {
+     "n": 22,
+     "count": 19,
+     "share": 0.8636
+    },
+    "paper": {
+     "n": 5,
+     "count": 4,
+     "share": 0.8
+    },
+    "project": {
+     "n": 3,
+     "count": 2,
+     "share": 0.6667
+    },
+    "unanswerable": {
+     "n": 5,
+     "count": 5,
+     "share": 1.0
+    }
+   },
+   "input_tokens_mean": 1283.4,
+   "output_tokens_mean": 62.8,
+   "by_judge": {
+    "qwen7b": {
+     "n": 61,
+     "count": 50,
+     "share": 0.8197
+    },
+    "llama3b": {
+     "n": 61,
+     "count": 55,
+     "share": 0.9016
+    }
+   }
+  }
+ },
+ "controls": {
+  "qwen7b": {
+   "same": {
+    "n": 61,
+    "as_expected": 61,
+    "unparsed": 0
+   },
+   "other": {
+    "n": 61,
+    "as_expected": 61,
+    "unparsed": 0
+   },
+   "abstain": {
+    "n": 61,
+    "as_expected": 61,
+    "unparsed": 0
+   }
+  },
+  "llama3b": {
+   "same": {
+    "n": 61,
+    "as_expected": 59,
+    "unparsed": 0
+   },
+   "other": {
+    "n": 61,
+    "as_expected": 56,
+    "unparsed": 1
+   },
+   "abstain": {
+    "n": 61,
+    "as_expected": 47,
+    "unparsed": 7
+   }
+  }
+ },
+ "agreement": {
+  "bm25": {
+   "n": 56,
+   "agree": 44,
+   "both_correct": 43,
+   "both_incorrect": 1,
+   "only_first": 2,
+   "only_second": 10
+  },
+  "hybrid_rerank": {
+   "n": 58,
+   "agree": 53,
+   "both_correct": 50,
+   "both_incorrect": 3,
+   "only_first": 0,
+   "only_second": 5
+  }
+ },
+ "gate": {
+  "baseline": "bm25",
+  "candidate": "hybrid_rerank",
+  "n_items": 66,
+  "baseline_mean": 0.7576,
+  "candidate_mean": 0.8333,
+  "delta": 0.0758,
+  "ci": [
+   0.0,
+   0.1515
+  ],
+  "n_better": 8,
+  "n_worse": 3,
+  "n_same": 55,
+  "p_worse": 0.9673,
+  "rule": "drop",
+  "max_drop": 0.02,
+  "alpha": 0.05,
+  "passed": true,
+  "reason": "no significant drop beyond the tolerance"
+ }
+}
